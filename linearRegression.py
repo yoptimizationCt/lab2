@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 class LinearRegression:
     def __init__(self, lr=0.01, n_iters=1000):
         self.lr = lr
@@ -35,11 +36,10 @@ class LinearRegression:
         y_pred = np.dot(X, self.weights) + self.bias
         return y_pred
 
+
 # Генерация синтетических данных
 X = 2 * np.random.rand(100, 1)
 y = 4 + 3 * X + np.random.randn(100, 1)
-
-
 
 # Создание и обучение модели
 model = LinearRegression(lr=0.01, n_iters=1000)
