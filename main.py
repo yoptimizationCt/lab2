@@ -23,9 +23,9 @@ plt.rcParams["figure.figsize"] = (10, 10)
 # plt.savefig("sample.png")
 # plt.show()
 # fig.savefig("sample.png")
-n = np.random.randint(10, 100)
+n = 1000
 X = np.random.rand(n) * 10
-Y = np.random.rand(n) * 10
+Y = 5 * X + np.random.rand(n) * 20
 
 # print(numpy.gradient([[], []]))
 fig, ax = plt.subplots()
@@ -35,7 +35,7 @@ ax.scatter(X, Y)
 
 point = [0, 0]
 h = 10e-6
-lr = 0.09
+lr = 0.0009
 for epoch in range(1, 100):
     j = np.random.randint(0, n)
     # grad = np.gradient([[X[j] * (point[0] + h * i + point[1] - Y[j] for i in range(0, 2)] for ])
@@ -48,7 +48,7 @@ for epoch in range(1, 100):
     point = point - lr * grad
 
 print(point)
-ax.plot([0, 10], [point[1], 10 * point[0] + point[1]])
+ax.plot([0, 10], [point[1], 10 * point[0] + point[1]], color='red', linewidth=5)
 # plt.contour(X, Y, f([X, Y]), levels=sorted(list(set([f(p) for p in points]))))
 plt.show()
 
