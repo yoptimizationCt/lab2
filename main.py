@@ -22,21 +22,24 @@ def sum_gradient(X, Y, point, summand_numbers):
 def gradient_descent(X, Y, start_point, learning_rate, epochs, batch_size):
     points = np.zeros((epochs, 2))
     points[0] = start_point
+    lr = learning_rate
     for epoch in range(1, epochs):
-        # summand_numbers = np.random.randint(0, len(X), batch_size)
         summand_numbers = [(epoch * batch_size + j) % len(X) for j in range(batch_size)]
-        points[epoch] = points[epoch - 1] - learning_rate * sum_gradient(X, Y, points[epoch - 1], summand_numbers)
+        points[epoch] = points[epoch - 1] - lr * sum_gradient(X, Y, points[epoch - 1], summand_numbers)
+        # Exponential decay
+        # lr *= 0.95
+        # Step decay
+        if epoch % 100 == 0:
+            lr *= 0.5
     return points
 
 
-# h = 10e-6
 n = 20
 x_scale = 10
-start_point = np.random.rand(2) * 10
-# start_point = [10, 10]
+start_point = [10, 10]
 learning_rate = 0.0009
 epochs = 1000
-batch_size = 10
+batch_size = 1
 
 X, Y = random_linear_dependence(a=3, b=0, x_scale=x_scale, points_number=n, variation=20)
 
@@ -50,14 +53,12 @@ for i in range(n):
     all_points[i][0] = X[i]
     all_points[i][1] = Y[i]
 paint_contour(-5, 15, 0, 20, 200, descent_points, create_function(all_points))
-# fig, ax = plt.subplots()
-plt.title("Batch size = " + str(batch_size))
-plt.savefig("batch/descent_batch_" + str(batch_size) + ".png")
+plt.savefig("descent_default.png")
 plt.cla()
 
 plt.scatter(X, Y)
 
 min_point = descent_points[-1]
 plt.plot([0, x_scale], [min_point[1], x_scale * min_point[0] + min_point[1]], color='red', linewidth=5)
-plt.savefig("batch/regression.png")
+plt.savefig("regression_default.png")
 plt.cla()
