@@ -2,7 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def paint_contour(a_min, a_max, b_min, b_max, accuracy, points, f):
+def paint_contour(a_min, a_max, b_min, b_max, accuracy, points, f, color='r'):
+    plt.clf()
     # lower_bound = -10
     # upper_bound = 10
     # accuracy = 200
@@ -16,5 +17,5 @@ def paint_contour(a_min, a_max, b_min, b_max, accuracy, points, f):
     #     for j in range(len(B)):
     #         F[i][j] = f([A[i][j], B[i][j]])
     plt.contour(A, B, f([A, B]), levels=sorted(list(set([f(p) for p in points]))))
-    plt.plot(points[:, 0], points[:, 1], '-r8')
+    plt.plot(points[:, 0], points[:, 1], '-{0}8'.format(color))
     # plt.savefig("path_default.png")
