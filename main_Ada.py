@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 plt.rcParams["figure.figsize"] = (10, 10)
-n = 1000
+n = 100
 X = np.random.rand(n) * 10
 Y = 5 * X + np.random.rand(n) * 20
 fig, ax = plt.subplots()
@@ -10,7 +10,7 @@ ax.scatter(X, Y)
 
 point = np.zeros(2)
 eps = 10e-6
-lr = 0.0009
+lr = 1
 v = np.zeros(2)
 
 
