@@ -6,12 +6,6 @@ from create_function import create_function
 plt.rcParams["figure.figsize"] = (10, 10)
 
 
-# def random_linear_dependence(a, b, x_scale, points_number, variation):
-#     X = np.random.rand(points_number) * x_scale
-#     Y = a * X + b + np.random.rand(points_number) * variation
-#     return X, Y
-
-
 # Создаёт полиномиальную зависимость заданной степени с заданным разбросом
 def random_polynomial(degree, x_scale, points_number, variation):
     X = (np.random.rand(points_number) - np.random.rand(points_number)) * x_scale
@@ -19,14 +13,6 @@ def random_polynomial(degree, x_scale, points_number, variation):
     for n in range(degree + 1):
         Y += np.random.rand(1) * X ** n
     return X, Y
-
-
-# linear regression case (2 dimensions)
-# def sum_gradient(X, Y, point, summand_numbers):
-#     gradient = np.zeros(2)
-#     for i in summand_numbers:
-#         gradient += np.array([2 * X[i] * (point[0] * X[i] + point[1] - Y[i]), 2 * (point[0] * X[i] + point[1] - Y[i])])
-#     return gradient
 
 
 # Считает значение заданного слагаемого в заданной точке
@@ -64,7 +50,6 @@ def get_norm_gradient(point, norm, h=10e-6):
     return gradient
 
 
-# polynomial regression case
 # Считает градиент суммы заданных слагаемых (батча)
 def sum_gradient(X, Y, point, summand_numbers):
     gradient = np.zeros(len(point))
@@ -82,9 +67,6 @@ def gradient_descent(X, Y, start_point, learning_rate, epochs, batch_size, l1, l
         points[epoch] = points[epoch - 1] - lr * (sum_gradient(X, Y, points[epoch - 1], summand_numbers)
                                                   + l1 * get_norm_gradient(points[epoch - 1], 1)
                                                   + l2 * get_norm_gradient(points[epoch - 1], 2))
-        # Exponential decay
-        # lr *= 0.95
-        # Step decay
         if epoch % 100 == 0:
             lr *= 0.5
     return points
@@ -114,8 +96,6 @@ X_values = np.linspace(-x_scale, x_scale, 200)
 ax.plot(X_values, calc_polynomial(X_values, min_point), color='red')
 plt.title("Polynomial regression with regularization\nDegree = " + str(degree) +
           ", L1 = " + str(l1) + ", L2 = " + str(l2))
-# plt.title("Polynomial regression without regularization\nDegree = " + str(degree))
 
 plt.savefig("regularization/regression_regularization_L1=" + str(l1) + "_L2=" + str(l2) + "degree=" + str(degree) + ".png")
-# plt.savefig("regularization/regression_without_regularization_degree=" + str(degree) + ".png")
 plt.cla()
