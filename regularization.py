@@ -55,6 +55,15 @@ def get_gradient(x, y, point, h=10e-6):
     return gradient
 
 
+def get_norm_gradient(point, norm, h=10e-6):
+    gradient = np.zeros(len(point))
+    for i in range(len(point)):
+        delta = point.copy()
+        delta[i] += h
+        gradient[i] = (np.linalg.norm(delta, ord=norm) ** norm - np.linalg.norm(point, ord=norm) ** norm) / h
+    return gradient
+
+
 # polynomial regression case
 # Считает градиент суммы заданных слагаемых (батча)
 def sum_gradient(X, Y, point, summand_numbers):
@@ -64,13 +73,15 @@ def sum_gradient(X, Y, point, summand_numbers):
     return gradient
 
 
-def gradient_descent(X, Y, start_point, learning_rate, epochs, batch_size):
+def gradient_descent(X, Y, start_point, learning_rate, epochs, batch_size, l1, l2):
     points = np.zeros((epochs, len(start_point)))
     points[0] = start_point
     lr = learning_rate
     for epoch in range(1, epochs):
         summand_numbers = [(epoch * batch_size + j) % len(X) for j in range(batch_size)]
-        points[epoch] = points[epoch - 1] - lr * sum_gradient(X, Y, points[epoch - 1], summand_numbers)
+        points[epoch] = points[epoch - 1] - lr * (sum_gradient(X, Y, points[epoch - 1], summand_numbers)
+                                                  + l1 * get_norm_gradient(points[epoch - 1], 1)
+                                                  + l2 * get_norm_gradient(points[epoch - 1], 2))
         # Exponential decay
         # lr *= 0.95
         # Step decay
@@ -79,40 +90,32 @@ def gradient_descent(X, Y, start_point, learning_rate, epochs, batch_size):
     return points
 
 
-# Результат ОЧЕНЬ сильно зависит от шага, кол-ва точек, разброса точек, размера батча
-# degree = 2
-n = 10
-x_scale = 1
-# start_point = np.zeros(degree + 1)
-learning_rate = 0.09
+n = 4
+x_scale = 2.5
+learning_rate = 0.000009
 epochs = 1000
-batch_size = 5
+batch_size = 1
+l1 = 1
+l2 = 0
+degree = 5
 
-# X, Y = random_linear_dependence(a=3, b=0, x_scale=x_scale, points_number=n, variation=20)
-# X, Y = random_polynomial(degree, x_scale, n, 0.1)
+start_point = np.array([1.33, 2.37, -3.06, -1.3, 0.902, 0.1])
 
-# descent_points = np.zeros((epochs, degree + 1))
-for degree in range(1, 9):
-    for variant in range(3):
-        start_point = np.zeros(degree + 1)
-        X, Y = random_polynomial(degree, x_scale, n, 0.3)
-        descent_points = gradient_descent(X, Y, start_point, learning_rate, epochs, batch_size)
+X = np.array([-1.5, -0.4, 1, 2])
+Y = np.array([-0.8, 0, 0.3, 1])
+descent_points = gradient_descent(X, Y, start_point, learning_rate, epochs, batch_size, l1, l2)
 
-        # all_points - нужен двумерный массив точек в create_function, а X, Y - одномерные массивы :(
-        # all_points = np.zeros((n, 2))
-        # for i in range(n):
-        #     all_points[i][0] = X[i]
-        #     all_points[i][1] = Y[i]
-        # paint_contour(-5, 15, 0, 20, 200, descent_points, create_function(all_points))
-        # plt.savefig("descent_default.png")
-        # plt.cla()
+fig, ax = plt.subplots()
+ax.set_ylim(-2, 2)
+ax.scatter(X, Y)
 
-        plt.scatter(X, Y)
+min_point = descent_points[-1]
+X_values = np.linspace(-x_scale, x_scale, 200)
+ax.plot(X_values, calc_polynomial(X_values, min_point), color='red')
+plt.title("Polynomial regression with regularization\nDegree = " + str(degree) +
+          ", L1 = " + str(l1) + ", L2 = " + str(l2))
+# plt.title("Polynomial regression without regularization\nDegree = " + str(degree))
 
-        min_point = descent_points[-1]
-        X_values = np.linspace(-x_scale, x_scale, 200)
-        # plt.plot([0, x_scale], [min_point[1], x_scale * min_point[0] + min_point[1]], color='red', linewidth=5)
-        plt.plot(X_values, calc_polynomial(X_values, min_point), color='red')
-        plt.title("Polynomial regression\nDegree = " + str(degree))
-        plt.savefig("polynomial/regression" + str(variant) + "_degree_" + str(degree) + ".png")
-        plt.cla()
+plt.savefig("regularization/regression_regularization_L1=" + str(l1) + "_L2=" + str(l2) + "degree=" + str(degree) + ".png")
+# plt.savefig("regularization/regression_without_regularization_degree=" + str(degree) + ".png")
+plt.cla()
