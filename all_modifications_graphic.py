@@ -4,13 +4,6 @@ import numpy as np
 from paint_contour import paint_contour
 from create_function import create_function_XY
 
-n = 1000
-X = np.random.rand(n) * 10
-Y = 10 * X + np.random.rand(n) * 1
-plt.rcParams["figure.figsize"] = (10, 10)
-fig, ax = plt.subplots()
-ax.scatter(X, Y)
-
 def gradient(point, j):
     return np.array(
         [2 * X[j] * (point[0] * X[j] + point[1] - Y[j]),
@@ -80,6 +73,12 @@ def Adam(point=np.zeros(2), lr=0.1, epoch_count=100, eps=10e-8, beta1=0.9, beta2
         points[epoch] = points[epoch - 1] - lr * vv / (np.sqrt(ss + eps))
     return points
 
+n = 1000
+X = np.random.rand(n) * 10
+Y = 10 * X + np.random.rand(n) * 1
+plt.rcParams["figure.figsize"] = (10, 10)
+fig, ax = plt.subplots()
+ax.scatter(X, Y)
 
 epoch_count = 1000
 points_SGD = SGD(epoch_count=epoch_count)
@@ -105,7 +104,5 @@ def paint(points, function=f, color='r'):
 ax.plot([0, 10], [points_SGD[-1][1],
                   10 * points_SGD[-1][0] + points_SGD[-1][1]], color='red', linewidth=5)
 plt.show()
-
-
 paint(points_SGD)
 plt.savefig("SGD.png")
