@@ -1,5 +1,4 @@
 def create_function_XY(X, Y):
-    # a^2 * \sum x_i^2 + b^2 * n + \sum y_i^2 + 2ab * \sum x_i - 2a*\sum x_i*y_i - 2b \sum y_i
     n = len(X)
     summ_x_sqr = 0
     summ_y_sqr = 0
@@ -19,7 +18,6 @@ def create_function_XY(X, Y):
 
 
 def create_function(points):
-    # a^2 * \sum x_i^2 + b^2 * n + \sum y_i^2 + 2ab * \sum x_i - 2a*\sum x_i*y_i - 2b \sum y_i
     n = len(points)
     summ_x_sqr = 0
     summ_y_sqr = 0
