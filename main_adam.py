@@ -31,8 +31,6 @@ for epoch in range(1, 100):
     vv = v / (1 - beta1 ** (epoch + 1))
     ss = s / (1 - beta2 ** (epoch + 1))
     point = point - lr * vv / (np.sqrt(ss + eps))
-    # v = gamma * v_prev - lr * grad
-    # point = point
 print(point)
 ax.plot([0, 10], [point[1], 10 * point[0] + point[1]], color='red', linewidth=5)
 plt.show()
