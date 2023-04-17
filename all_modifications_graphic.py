@@ -106,19 +106,6 @@ ax.plot([0, 10], [points_SGD[-1][1],
                   10 * points_SGD[-1][0] + points_SGD[-1][1]], color='red', linewidth=5)
 plt.show()
 
-# ax.plot([0, 10], [points_SGD_with_momentum[-1][1],
-#                   10 * points_SGD_with_momentum[-1][0] + points_SGD_with_momentum[-1][1]], color='red', linewidth=5)
-# plt.show()
 
 paint(points_SGD)
 plt.savefig("SGD.png")
-# paint(points_SGD_with_momentum, color='b')
-# plt.savefig("SGD_with_momentum.png")
-# paint(points_Nesterov, color='g')
-# plt.savefig("Nesterov.png")
-# paint(points_AdaGrad, color='c')
-# plt.savefig("AdaGrad.png")
-# paint(points_RMS_prop, color='m')
-# plt.savefig("RMS_prop.png")
-# paint(points_Adam, color='y')
-# plt.savefig("Adam.png")
