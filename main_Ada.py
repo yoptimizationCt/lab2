@@ -26,8 +26,6 @@ for epoch in range(1, 100):
     gr = gradient(point, j, X)
     state_sum += gr*gr
     point = point - lr * gr / (np.sqrt(state_sum) + eps)
-    # v = gamma * v_prev - lr * grad
-    # point = point
 print(point)
 ax.plot([0, 10], [point[1], 10 * point[0] + point[1]], color='red', linewidth=5)
 plt.show()
