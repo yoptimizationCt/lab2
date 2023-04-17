@@ -25,8 +25,6 @@ for epoch in range(1, 100):
     j = np.random.randint(0, n)
     v = gamma * v + (1 - gamma) * gradient(point, j, X)
     point = point - lr * v
-    # v = gamma * v_prev - lr * grad
-    # point = point
 print(point)
 ax.plot([0, 10], [point[1], 10 * point[0] + point[1]], color='red', linewidth=5)
 plt.show()
